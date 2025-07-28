@@ -1,1 +1,290 @@
+/* Paleta de colores rosados inspirada en la terapia ocupacional */
+:root {
+    --primary-pink: #f8c8dc; /* Rosa claro, suave y acogedor */
+    --secondary-pink: #e799b7; /* Rosa medio, más vibrante */
+    --accent-pink: #d36b9f; /* Rosa oscuro, para acentos y estados aprobados */
+    --text-color: #555; /* Gris oscuro para el texto principal */
+    --light-text: #fff; /* Blanco para texto sobre fondos oscuros */
+    --background-light: #fefefe; /* Fondo general muy claro */
+    --border-color: #eee; /* Color de borde sutil */
+    --shadow-color: rgba(0, 0, 0, 0.08); /* Sombra suave */
+    --blocked-color: #ffdddd; /* Fondo para ramos bloqueados */
+    --approved-color: #d36b9f; /* Color para ramos aprobados */
+}
 
+/* Estilos generales */
+body {
+    font-family: 'Montserrat', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: var(--background-light);
+    color: var(--text-color);
+    line-height: 1.6;
+    overflow-x: hidden; /* Evita el scroll horizontal */
+}
+
+/* Encabezado */
+header {
+    background-color: var(--primary-pink);
+    color: var(--light-text);
+    padding: 2rem 1rem;
+    text-align: center;
+    box-shadow: 0 4px 8px var(--shadow-color);
+    margin-bottom: 2rem;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 2.5rem;
+    color: var(--text-color); /* Texto oscuro para contraste */
+}
+
+header p {
+    font-size: 1.1rem;
+    color: var(--text-color);
+}
+
+/* Contenedor principal de la malla */
+.curriculum-grid {
+    display: flex;
+    flex-wrap: wrap; /* Permite que las columnas se envuelvan en pantallas pequeñas */
+    justify-content: center;
+    gap: 1.5rem; /* Espacio entre las columnas de semestre */
+    padding: 0 1rem 3rem;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+/* Estilos para cada semestre */
+.semester {
+    background-color: var(--light-text);
+    border-radius: 12px;
+    box-shadow: 0 6px 15px var(--shadow-color);
+    padding: 1.5rem;
+    flex: 1 1 calc(20% - 1.5rem); /* 5 columnas por fila para pantallas grandes */
+    min-width: 280px; /* Ancho mínimo para cada columna */
+    box-sizing: border-box; /* Incluye padding y border en el ancho */
+    transition: transform 0.3s ease-in-out;
+}
+
+.semester:hover {
+    transform: translateY(-5px);
+}
+
+.semester h2 {
+    color: var(--secondary-pink);
+    margin-top: 0;
+    margin-bottom: 1.2rem;
+    font-size: 1.6rem;
+    text-align: center;
+    border-bottom: 2px solid var(--border-color);
+    padding-bottom: 0.8rem;
+}
+
+/* Lista de ramos */
+.course-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.course-item {
+    background-color: #fff;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 1rem 1.2rem;
+    margin-bottom: 0.8rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 1rem;
+    position: relative;
+    overflow: hidden; /* Para el efecto de la marca de agua */
+}
+
+.course-item:last-child {
+    margin-bottom: 0;
+}
+
+.course-item:hover:not(.approved):not(.blocked) {
+    background-color: #f9f9f9;
+    border-color: var(--secondary-pink);
+}
+
+/* Estado "aprobado" */
+.course-item.approved {
+    background-color: var(--approved-color);
+    color: var(--light-text);
+    text-decoration: line-through;
+    border-color: var(--approved-color);
+    position: relative;
+    overflow: hidden;
+}
+
+.course-item.approved::after {
+    content: 'APROBADO';
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    font-size: 0.8em;
+    font-weight: bold;
+    color: rgba(255, 255, 255, 0.3);
+    transform: rotate(45deg);
+    pointer-events: none;
+    opacity: 0.8;
+}
+
+/* Estado "bloqueado" */
+.course-item.blocked {
+    background-color: var(--blocked-color);
+    color: var(--text-color);
+    cursor: not-allowed;
+    border-style: dashed;
+    border-color: var(--secondary-pink);
+    opacity: 0.7;
+}
+
+.course-item.blocked::after {
+    content: 'BLOQUEADO';
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    font-size: 0.8em;
+    font-weight: bold;
+    color: rgba(0, 0, 0, 0.15);
+    transform: rotate(-45deg);
+    pointer-events: none;
+    opacity: 0.8;
+}
+
+/* Tooltip para ramos bloqueados */
+.course-item[data-tooltip]:hover:not(.approved) {
+    position: relative;
+}
+
+.course-item[data-tooltip]:hover:not(.approved)::before {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: var(--text-color);
+    color: var(--light-text);
+    padding: 0.6rem 0.8rem;
+    border-radius: 6px;
+    white-space: nowrap;
+    font-size: 0.9em;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    z-index: 10;
+}
+
+.course-item[data-tooltip]:hover:not(.approved)::after {
+    content: '';
+    position: absolute;
+    bottom: calc(100% - 5px);
+    left: 50%;
+    transform: translateX(-50%) rotate(45deg);
+    border-width: 5px;
+    border-style: solid;
+    border-color: var(--text-color) transparent transparent var(--text-color);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    z-index: 10;
+}
+
+.course-item[data-tooltip]:hover:not(.approved)::before,
+.course-item[data-tooltip]:hover:not(.approved)::after {
+    opacity: 1;
+    visibility: visible;
+}
+
+
+/* Pie de página */
+footer {
+    text-align: center;
+    padding: 1.5rem 1rem;
+    margin-top: 3rem;
+    background-color: var(--primary-pink);
+    color: var(--text-color);
+    font-size: 0.9rem;
+    box-shadow: 0 -4px 8px var(--shadow-color);
+}
+
+/* Media Queries para responsividad */
+@media (max-width: 1200px) {
+    .semester {
+        flex: 1 1 calc(25% - 1.5rem); /* 4 columnas */
+    }
+}
+
+@media (max-width: 992px) {
+    .semester {
+        flex: 1 1 calc(33.33% - 1.5rem); /* 3 columnas */
+    }
+    header h1 {
+        font-size: 2rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .semester {
+        flex: 1 1 calc(50% - 1.5rem); /* 2 columnas */
+        padding: 1rem;
+    }
+    header h1 {
+        font-size: 1.8rem;
+    }
+    header p {
+        font-size: 1rem;
+    }
+    .course-item {
+        font-size: 0.95rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .curriculum-grid {
+        flex-direction: column; /* Una columna por fila */
+        align-items: center;
+    }
+    .semester {
+        flex: 1 1 95%; /* Ocupa casi todo el ancho */
+        min-width: unset;
+        width: 100%;
+    }
+    header h1 {
+        font-size: 1.5rem;
+    }
+    header p {
+        font-size: 0.9rem;
+    }
+}
+
+/* Icono/detalle de terapia ocupacional (ejemplo con un corazón y una mano) */
+.course-item::before {
+    content: '❤'; /* Ejemplo de un icono de corazón */
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--secondary-pink);
+    font-size: 0.9em;
+    opacity: 0.4;
+    pointer-events: none;
+}
+
+.course-item.approved::before {
+    content: '✔'; /* Icono de check para aprobados */
+    color: var(--light-text);
+    opacity: 1;
+}
+
+/* Ajuste del padding para el icono */
+.course-item span {
+    margin-left: 25px; /* Espacio para el icono */
+}
