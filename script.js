@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Definición de la estructura de la malla curricular por semestres
-    const curriculum = {
+    // Definición de los datos de la malla curricular
+    const malla = {
         'Semestre 1': [
             'Práctica curricular I',
             'Curso de vida',
@@ -46,7 +46,7 @@ document.addEventListener('DOMContentLoaded', () => {
             'Integrado terapia ocupacional en niños/as y adolescentes II',
             'Integrado terapia ocupacional en adultos II',
             'Integrado terapia ocupacional en personas mayores II',
-            'Metodología cuantitativa de la investigación', // Repetido en el ejemplo, ajustar si es error
+            'Metodología cualitativa de la investigación', // Corregido: En tu lista original dice cuantitativa, pero la lista de requisitos apunta a que debe ser cualitativa.
             'Interdisciplinar'
         ],
         'Semestre 7': [
@@ -66,163 +66,141 @@ document.addEventListener('DOMContentLoaded', () => {
             'Ortótica y nuevas tecnologías'
         ],
         'Semestre 9': [
-            'Práctica profesional I',
-            'Práctica profesional II',
-            'Práctica profesional III' // Asumo que las prácticas profesionales son ramos individuales en este semestre
+            'Práctica profesional I'
         ],
         'Semestre 10': [
-            // Semestre 10 no tiene ramos listados en tu ejemplo, si hay ramos adicionales, agregarlos aquí.
-            // Por simplicidad, si no hay ramos, este semestre podría no mostrarse, o podría agregarse un mensaje.
+            'Práctica profesional II',
+            'Práctica profesional III'
         ]
     };
 
-    // Definición de requisitos para cada ramo
-    const requirements = {
-        'Práctica curricular II': ['Práctica curricular I', 'Curso de vida', 'Introducción a la terapia ocupacional'],
-        'Habilidades y actividades terapéuticas': ['Práctica curricular I', 'Curso de vida', 'Introducción a la terapia ocupacional'],
-        'Fundamentos para la terapia ocupacional': ['Práctica curricular I', 'Curso de vida', 'Introducción a la terapia ocupacional'],
-        'Anatomía': ['Biología celular y genética'],
-        'Inglés II': ['Inglés I'],
-        'Formación básica para la vida académica II': ['Formación básica para la vida académica I'],
-        'Práctica curricular III': ['Práctica curricular II', 'Habilidades y actividades terapéuticas', 'Fundamentos para la terapia ocupacional'],
-        'Modelos de intervención en terapia ocupacional': ['Práctica curricular II', 'Habilidades y actividades terapéuticas', 'Fundamentos para la terapia ocupacional'],
+    // Mapeo de requisitos
+    const requisitos = {
+        'Fisiología': ['Biología celular y genética'],
         'Anatomía funcional y biomecánica': ['Anatomía'],
-        'Práctica curricular IV': ['Práctica curricular III'],
-        'Práctica curricular V': ['Práctica curricular III'],
-        'Práctica curricular VI': ['Práctica curricular III'],
-        'Práctica curricular VII': ['Práctica curricular III'],
-        'Práctica curricular VIII': ['Práctica curricular III'],
-        'Neurociencia': ['Modelos de intervención en terapia ocupacional'],
+        'Modelos de intervención en terapia ocupacional': ['Fundamentos para la terapia ocupacional'],
+        'Práctica curricular III': ['Práctica curricular II'],
+        'Neurociencia': ['Fisiología'],
+        'Gestión en salud comunitaria': ['Salud pública y gestión'],
         'Inclusión social educativa': ['Modelos de intervención en terapia ocupacional'],
-        'Gestión en salud comunitaria': ['Modelos de intervención en terapia ocupacional'],
-        'Inclusión sociolaboral': ['Modelos de intervención en terapia ocupacional'],
-        'Curso de sello institucional IV': ['Curso de sello institucional III', 'Formación básica para la vida académica II'],
-        'Integrado terapia ocupacional en niños/as y adolescentes IV': ['Integrado terapia ocupacional en niños/as y adolescentes I', 'Integrado terapia ocupacional en niños/as y adolescentes II', 'Integrado terapia ocupacional en niños/as y adolescentes III'],
-        'Integrado terapia ocupacional en adultos IV': ['Integrado terapia ocupacional en adultos I', 'Integrado terapia ocupacional en adultos II', 'Integrado terapia ocupacional en adultos III'],
-        'Integrado terapia ocupacional en personas mayores IV': ['Integrado terapia ocupacional en personas mayores I', 'Integrado terapia ocupacional en personas mayores II', 'Integrado terapia ocupacional en personas mayores III'],
-        'Interdisciplinar': ['Interdisciplinar A+S'],
-        'Proyecto de investigación II': ['Proyecto de investigación I'],
+        'Inclusión sociolaboral': ['Habilidades y actividades terapéuticas'],
+        'Práctica curricular IV': ['Práctica curricular III'],
+        'Integrado terapia ocupacional en niños/as y adolescentes I': ['Inclusión social educativa'],
+        'Integrado terapia ocupacional en adultos I': ['Inclusión sociolaboral'],
+        'Integrado terapia ocupacional en personas mayores I': ['Neurociencia'],
+        'Interdisciplinar A+S': ['Gestión en salud comunitaria'],
+        'Práctica curricular V': [], // Se maneja de forma especial
+        'Integrado terapia ocupacional en niños/as y adolescentes II': ['Integrado terapia ocupacional en niños/as y adolescentes I'],
+        'Integrado terapia ocupacional en adultos II': ['Anatomía funcional y biomecánica'],
+        'Integrado terapia ocupacional en personas mayores II': ['Integrado terapia ocupacional en personas mayores I'],
+        'Metodología cualitativa de la investigación': ['Metodología cuantitativa de la investigación'],
+        'Práctica curricular VI': ['Práctica curricular V'],
+        'Integrado terapia ocupacional en niños/as y adolescentes III': ['Integrado terapia ocupacional en niños/as y adolescentes II'],
+        'Integrado terapia ocupacional en adultos III': ['Integrado terapia ocupacional en adultos II'],
+        'Integrado terapia ocupacional en personas mayores III': ['Integrado terapia ocupacional en personas mayores II'],
+        'Salud ocupacional y ergonomía': ['Integrado terapia ocupacional en adultos II'],
+        'Proyecto de investigación I': ['Metodología cualitativa de la investigación'],
+        'Práctica curricular VII': ['Práctica curricular VI'],
+        'Integrado terapia ocupacional en niños/as y adolescentes IV': ['Integrado terapia ocupacional en niños/as y adolescentes III'],
+        'Integrado terapia ocupacional en adultos IV': ['Integrado terapia ocupacional en adultos I'],
+        'Integrado terapia ocupacional en personas mayores IV': ['Integrado terapia ocupacional en personas mayores III'],
         'Ortótica y nuevas tecnologías': ['Salud ocupacional y ergonomía'],
-        // 'Metodología cuantitativa de la investigación' -> según tu lista, este ramo se requiere a sí mismo,
-        // lo cual es un caso especial. Asumo que es un error y no tiene prerrequisitos o tiene prerrequisitos de otro nombre
-        // Si es un ramo que se toma en varias fases, la implementación actual no lo maneja como "requisito de sí mismo"
-        // Si 'Metodología cuantitativa de la investigación' en semestre 6 requiere 'Metodología cuantitativa de la investigación' en semestre 5,
-        // entonces el nombre del ramo debería ser diferente, o el requisito debería ser más específico (ej. "Metodología Cuantitativa I" para "Metodología Cuantitativa II").
-        // Por ahora, lo dejaré sin requisitos explícitos ya que el nombre es el mismo.
+        'Proyecto de investigación II': ['Proyecto de investigación I'],
+        'Práctica curricular VIII': ['Práctica curricular VII'],
+        'Práctica profesional I': [], // Se manejan de forma especial
+        'Práctica profesional II': [], // Se manejan de forma especial
+        'Práctica profesional III': [] // Se manejan de forma especial
     };
 
-    // Almacenamiento de ramos aprobados en Local Storage
-    let approvedCourses = JSON.parse(localStorage.getItem('approvedCourses')) || [];
+    // Inicializar el estado de los ramos aprobados
+    let aprobados = new Set(JSON.parse(localStorage.getItem('ramosAprobados')) || []);
 
-    const curriculumGrid = document.querySelector('.curriculum-grid');
+    const container = document.querySelector('.container');
 
-    // Función para renderizar la malla curricular
-    function renderCurriculum() {
-        curriculumGrid.innerHTML = ''; // Limpiar la malla antes de renderizar
-        const allCourses = Object.values(curriculum).flat(); // Obtener todos los nombres de ramos
+    // Función para renderizar la malla
+    function renderMalla() {
+        container.innerHTML = '';
+        const todosLosRamos = Object.values(malla).flat();
 
-        // Iterar sobre cada semestre para crear sus columnas
-        for (const semesterName in curriculum) {
-            const semesterDiv = document.createElement('div');
-            semesterDiv.classList.add('semester');
+        for (const semestre in malla) {
+            const semestreDiv = document.createElement('div');
+            semestreDiv.className = 'semestre';
+            semestreDiv.innerHTML = `<h2>${semestre}</h2><ul class="ramos-list"></ul>`;
+            const ramosList = semestreDiv.querySelector('.ramos-list');
 
-            const semesterTitle = document.createElement('h2');
-            semesterTitle.textContent = semesterName;
-            semesterDiv.appendChild(semesterTitle);
+            malla[semestre].forEach(ramoNombre => {
+                const ramoLi = document.createElement('li');
+                ramoLi.textContent = ramoNombre;
+                ramoLi.className = 'ramo';
+                ramoLi.dataset.ramo = ramoNombre;
 
-            const courseList = document.createElement('ul');
-            courseList.classList.add('course-list');
-
-            // Iterar sobre los ramos de cada semestre
-            curriculum[semesterName].forEach(courseName => {
-                const courseItem = document.createElement('li');
-                courseItem.classList.add('course-item');
-                courseItem.dataset.course = courseName; // Guardar el nombre del ramo en un atributo de datos
-
-                const courseSpan = document.createElement('span');
-                courseSpan.textContent = courseName;
-                courseItem.appendChild(courseSpan);
-
-                // Comprobar si el ramo está aprobado
-                if (approvedCourses.includes(courseName)) {
-                    courseItem.classList.add('approved');
+                // Marcar como aprobado si ya lo está
+                if (aprobados.has(ramoNombre)) {
+                    ramoLi.classList.add('aprobado');
+                } else if (verificarRamoBloqueado(ramoNombre)) {
+                    ramoLi.classList.add('bloqueado');
                 }
 
-                courseList.appendChild(courseItem);
+                ramoLi.addEventListener('click', (event) => {
+                    marcarRamo(event.target);
+                });
+
+                ramosList.appendChild(ramoLi);
             });
-            semesterDiv.appendChild(courseList);
-            curriculumGrid.appendChild(semesterDiv);
+            container.appendChild(semestreDiv);
         }
-        updateCourseStates(); // Actualizar el estado de bloqueo/desbloqueo de todos los ramos
     }
 
-    // Función para verificar si un ramo tiene sus requisitos cumplidos
-    function areRequirementsMet(courseName) {
-        const required = requirements[courseName];
-        if (!required) {
-            return { met: true, missing: [] }; // No tiene requisitos, por lo tanto están cumplidos
+    // Función para verificar si un ramo está bloqueado
+    function verificarRamoBloqueado(ramoNombre) {
+        const reqs = requisitos[ramoNombre];
+        if (!reqs) {
+            return false;
         }
 
-        const missingRequirements = required.filter(req => !approvedCourses.includes(req));
-        return { met: missingRequirements.length === 0, missing: missingRequirements };
+        // Casos especiales para 'Práctica Curricular V'
+        if (ramoNombre === 'Práctica curricular V') {
+            return !todosLosRamosHastaSemestre(4).every(ramo => aprobados.has(ramo));
+        }
+        
+        // Casos especiales para las prácticas profesionales
+        if (ramoNombre.startsWith('Práctica profesional')) {
+            return !todosLosRamosHastaSemestre(8).every(ramo => aprobados.has(ramo));
+        }
+
+        return !reqs.every(req => aprobados.has(req));
     }
 
-    // Función para actualizar el estado visual (bloqueado/desbloqueado) de los ramos
-    function updateCourseStates() {
-        const allCourseElements = document.querySelectorAll('.course-item');
-        allCourseElements.forEach(courseElement => {
-            const courseName = courseElement.dataset.course;
-
-            // Si el ramo ya está aprobado, no lo marcamos como bloqueado
-            if (approvedCourses.includes(courseName)) {
-                courseElement.classList.remove('blocked');
-                courseElement.removeAttribute('data-tooltip'); // Eliminar tooltip si está aprobado
-                return;
-            }
-
-            const { met, missing } = areRequirementsMet(courseName);
-
-            if (met) {
-                courseElement.classList.remove('blocked');
-                courseElement.removeAttribute('data-tooltip');
+    // Función para marcar un ramo
+    function marcarRamo(ramoElement) {
+        const ramoNombre = ramoElement.dataset.ramo;
+        if (ramoElement.classList.contains('bloqueado')) {
+            const reqsFaltantes = requisitos[ramoNombre].filter(req => !aprobados.has(req));
+            if (ramoNombre === 'Práctica curricular V') {
+                const ramosFaltantes = todosLosRamosHastaSemestre(4).filter(ramo => !aprobados.has(ramo));
+                alert(`No puedes aprobar ${ramoNombre}. Debes aprobar todos los ramos hasta el semestre IV. Faltan: \n- ${ramosFaltantes.join('\n- ')}`);
+            } else if (ramoNombre.startsWith('Práctica profesional')) {
+                const ramosFaltantes = todosLosRamosHastaSemestre(8).filter(ramo => !aprobados.has(ramo));
+                alert(`No puedes aprobar ${ramoNombre}. Debes aprobar todos los ramos hasta el semestre VIII. Faltan: \n- ${ramosFaltantes.join('\n- ')}`);
             } else {
-                courseElement.classList.add('blocked');
-                // Crear un mensaje legible para el tooltip
-                const missingMessage = `Necesitas aprobar: ${missing.join(', ')}`;
-                courseElement.setAttribute('data-tooltip', missingMessage);
+                alert(`No puedes aprobar ${ramoNombre}. Primero debes aprobar los siguientes ramos: \n- ${reqsFaltantes.join('\n- ')}`);
             }
-        });
-    }
-
-    // Manejador de clic para marcar/desmarcar ramos
-    curriculumGrid.addEventListener('click', (event) => {
-        const courseItem = event.target.closest('.course-item');
-        if (!courseItem) return; // No se hizo clic en un ramo
-
-        const courseName = courseItem.dataset.course;
-
-        if (approvedCourses.includes(courseName)) {
-            // Si ya está aprobado, desaprobarlo (quitar de la lista de aprobados)
-            approvedCourses = approvedCourses.filter(name => name !== courseName);
-            courseItem.classList.remove('approved');
         } else {
-            // Si no está aprobado, verificar requisitos
-            const { met, missing } = areRequirementsMet(courseName);
-            if (met) {
-                approvedCourses.push(courseName);
-                courseItem.classList.add('approved');
-            } else {
-                // Mostrar un mensaje al usuario
-                alert(`No puedes aprobar "${courseName}" aún. Necesitas aprobar primero: ${missing.join(', ')}.`);
-                return; // No hacer nada más si está bloqueado
-            }
+            aprobados.add(ramoNombre);
+            localStorage.setItem('ramosAprobados', JSON.stringify([...aprobados]));
+            renderMalla();
         }
+    }
+    
+    // Función auxiliar para obtener todos los ramos hasta un semestre dado
+    function todosLosRamosHastaSemestre(numeroSemestre) {
+        let ramosHastaSemestre = [];
+        for (let i = 1; i <= numeroSemestre; i++) {
+            ramosHastaSemestre = ramosHastaSemestre.concat(malla[`Semestre ${i}`]);
+        }
+        return ramosHastaSemestre;
+    }
 
-        // Guardar el estado actualizado en Local Storage
-        localStorage.setItem('approvedCourses', JSON.stringify(approvedCourses));
-        updateCourseStates(); // Re-evaluar el estado de todos los ramos después de un cambio
-    });
-
-    // Renderizar la malla inicial al cargar la página
-    renderCurriculum();
+    // Renderizar la malla por primera vez
+    renderMalla();
 });
